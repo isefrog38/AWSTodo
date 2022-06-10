@@ -1,0 +1,26 @@
+.addMessageBlock {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    margin: 30px auto;
+}
+
+.inputAddMessage {
+    background-color: rgba(240, 255, 255, 0.53);
+    color: rgba(0, 0, 0, 0.96);
+    resize: vertical;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid black;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.06);
+    height: 10%;
+    width: 70%;
+}
+
+.inputAddMessage:focus {
+    background-color: aliceblue;
+}
+
+.buttonAddMessage {
+    padding: 4px 20px ;
+}
