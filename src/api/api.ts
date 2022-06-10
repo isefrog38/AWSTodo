@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {FileResponseType, FileType, ResponsePostType, TodolistType} from "../types/todolistType";
+import {FileResponseType, FileType, ResponsePostType, ResponseTaskType, TodolistType} from "../types/todolistType";
 import {FilterType, LanguageType} from "../types/reducersType";
 import {ResponseRegisterType} from "../types/authType";
 
@@ -33,18 +33,10 @@ instance.interceptors.response.use((config) => {
 });
 
 export const todolistsAPI = {
-    // getTodolists(params: { pageSize: number, page: number, filter: FilterType, search?: string }) {
-    //     return instance.get<{ todolists: TodolistType[], totalCount: number }>(`todolists`, {params});
-    // },
 
     getTodolists(params: { pageSize: number, page: number, filter: FilterType, search?: string }) {
-        return instanceAWS.get<{ todolists: TodolistType[], totalCount: number }>(`task`);
+        return instanceAWS.get<ResponseTaskType>(`task`);
     },
-
-    // createTodolist(title: string, date: Date, file?: FileType, id?: string) {
-    //     if (id) return instance.post<AxiosResponse<{ id: string }>>(`todolists/${id}`, {title, date, file});
-    //     else return instance.post<AxiosResponse<{ id: string }>>(`todolists`, {title, date, file});
-    // },
 
     createTodolist(title: string, date: Date, file?: FileType) {
         // if (id) return instance.post<AxiosResponse<{ id: string }>>(`todolists/${id}`, {title, date, file});
@@ -53,15 +45,14 @@ export const todolistsAPI = {
 
 
     removeTodolist(id: string) {
-        return instance.delete(`todolists/${id}`);
+        return instanceAWS.delete(`task?taskId=${id}`);
     },
 
     getFile(id: string) {
-        return instance.get<{ file: FileResponseType }>(`todolists/file/${id}`);
+        return instanceAWS.get<{ file: FileResponseType }>(`/file?id=${id}`);
     },
 
     getLanguage(lang: LanguageType) {
-        // return instance.get(`todolists/language/${lang}`);
         return instanceAWS.get(`language?lang=${lang}`);
     },
 }

@@ -50,7 +50,7 @@ export const CardTable = ({itemPack, isFetching}: CardTableType) => {
                 </ItemColumn>
                 {isFetching
                     ? <LoadingTable/>
-                    : itemPack.map(el => <TableElemets key={el._id} el={el}/>)
+                    : itemPack.map(el => <TableElemets key={el.taskId} el={el}/>)
                 }
             </Table>
         </PacksBlock>

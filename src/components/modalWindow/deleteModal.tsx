@@ -28,7 +28,7 @@ export const DeleteTaskModal = ({setShow, id}: DeletePackModalType) => {
         setShow(false);
         dispatch(removeTodolistTC(id))
     };
-    let findName = stateTask.find(el => el._id === id)?.title;
+    let findName = stateTask.find(el => el.taskId === id)?.title;
 
     return (
         <ModalWrapper>

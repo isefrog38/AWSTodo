@@ -67,9 +67,9 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
                     lastModified: file?.lastModified,
                     path: fileUrl,
                 };
-                dispatch(createTodolistTC(values.nameTask, date, fileTyped, el?._id));
+                dispatch(createTodolistTC(values.nameTask, date, fileTyped, el?.taskId));
             } else {
-                dispatch(createTodolistTC(values.nameTask, date, undefined, el?._id));
+                dispatch(createTodolistTC(values.nameTask, date, undefined, el?.taskId));
             }
             setShow(false);
         },
@@ -77,7 +77,7 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
 
     useEffect(() => {
         loginForm.setFieldValue('nameTask', el?.title);
-        loginForm.setFieldValue('date', el?.addedDate);
+        loginForm.setFieldValue('date', el?.date);
     }, [el?.title])
 
     return (
@@ -117,7 +117,7 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
                                 <DatePicker id="date"
                                             selected={date}
                                             onChange={(date: Date) => setDate(date)}
-                                            value={el?.addedDate.slice(0, 10).split("-").reverse().join("-")}
+                                            value={el?.date.slice(0, 10).split("-").reverse().join("-")}
                                 />
                             </div>
                         </div>

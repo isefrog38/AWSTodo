@@ -1,10 +1,14 @@
 export type TodolistType = {
-    // _id: string
     taskId: string
     title: string
-    // addedDate: string
     date: string
     file?: 1 | 0
+}
+
+export type ResponseTaskType = {
+    statusCode: number
+    todolists: TodolistType[]
+    totalCount: number
 }
 
 export type ResponsePostType = {
@@ -39,12 +43,4 @@ export type FileType = {
     size: number | undefined,
     lastModified: number | undefined,
     path: string,
-}
-
-
-export type ResponseType<D = {}> = {
-    resultCode: number
-    messages: Array<string>
-    fieldsErrors: Array<string>
-    data: D
 }

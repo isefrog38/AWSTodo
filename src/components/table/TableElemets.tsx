@@ -11,7 +11,7 @@ export const TableElemets = ({el}: TableElementsType) => {
     return (
         <GeneralBlock>
              <Item>{el.title}</Item>
-            <Item>{el.addedDate.length <= 10 ? el.addedDate : el.addedDate.slice(0, 10).split("-").reverse().join("-")}</Item>
+            <Item>{el.date.length <= 10 ? el.date : el.date.slice(0, 10).split("-").reverse().join("-")}</Item>
             <Item>
                 <ActiveButtonsTable el={el} />
             </Item>
