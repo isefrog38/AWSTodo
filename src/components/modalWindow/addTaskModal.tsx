@@ -27,7 +27,6 @@ export type FormikErrorType = {
 export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
 
     const maxLengthInput = 30;
-    const stateApp = useAppSelector<AppInitialStateType>(state => state.AppReducer);
     const dispatch = useTypedDispatch();
     const [file, setFile] = useState<File | null>(null);
     const [fileUrl, setFileURL] = useState<string | null>(null);
@@ -78,7 +77,7 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
     useEffect(() => {
         loginForm.setFieldValue('nameTask', el?.title);
         loginForm.setFieldValue('date', el?.date);
-    }, [el?.title])
+    }, [el?.title, el?.date])
 
     return (
         <ModalWrapper>

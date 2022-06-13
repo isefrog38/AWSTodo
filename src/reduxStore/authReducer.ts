@@ -3,7 +3,6 @@ import {initialStateAuthorizationType, ResponseDataLoginOrAuthMe, ResponseRegist
 
 let initialState: initialStateAuthorizationType = {
     user: {
-        id: null,
         email: null,
         isActivated: null,
     },

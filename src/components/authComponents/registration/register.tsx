@@ -6,7 +6,9 @@ import {ButtonWrapper, CardWrapper, ErrorWrapper, FormWrapper, TextAuthWrapper, 
 import {Button, Input } from '../../stylesComponents/button';
 import { colors } from '../../stylesComponents/colors';
 import { PATH } from '../../../utilsFunction/enumPath';
-import {RegisterTC} from "../../../thunk/authThunk";
+import UserPool from "../../../utilsFunction/userPool";
+import {setAppErrorMessageAC, setAppSuccessMessageAC} from "../../../reduxStore/appReducer";
+import {setCheckEmailAC} from "../../../reduxStore/authReducer";
 
 
 type FormikErrorType = {
@@ -42,14 +44,31 @@ export const Register = () => {
             return errors;
         },
         onSubmit: (values) => {
-            dispatch(RegisterTC(values.email, values.password, navigate));
+            UserPool.signUp(
+                values.email,
+                values.password,
+                [],
+                [],
+                (err, data) => {
+                    if (err) {
+                        dispatch(setAppErrorMessageAC({error: err.message}));
+                        return
+                    } else {
+                        dispatch(setCheckEmailAC({email: values.email}));
+                        dispatch(setAppSuccessMessageAC({success: " Congratulations ! You are created account"}));
+                        navigate(PATH.checkEmail);
+
+                        setTimeout(() => { navigate(PATH.login) },5000);
+                    }
+                });
+            // dispatch(RegisterTC(values.email, values.password, navigate));
             registrationForm.resetForm();
         },
     });
     return (
         <CardWrapper width={413} height={540}>
 
-            <TitleAuthWrapper fontSz={26}>It-incubator</TitleAuthWrapper>
+            <TitleAuthWrapper fontSz={26}>SenamaSoft</TitleAuthWrapper>
             <TitleAuthWrapper fontSz={22}>Sign Up</TitleAuthWrapper>
             <FormWrapper height={300} onSubmit={registrationForm.handleSubmit}>
 

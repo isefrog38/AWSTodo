@@ -16,7 +16,11 @@ import {colors} from '../../stylesComponents/colors';
 import {useTypedDispatch} from "../../../reduxStore/store";
 import {PATH} from '../../../utilsFunction/enumPath';
 import {Button} from '../../stylesComponents/button';
-import {LoginTC} from "../../../thunk/authThunk";
+import UserPool from "../../../utilsFunction/userPool";
+import {CognitoUser, AuthenticationDetails} from "amazon-cognito-identity-js";
+import {setAppErrorMessageAC, setAppSuccessMessageAC} from "../../../reduxStore/appReducer";
+import {setAuthUserDataAC} from "../../../reduxStore/authReducer";
+import {getUser} from "../../../utilsFunction/Error-Utils";
 
 type FormikErrorType = {
     email?: string;
@@ -45,7 +49,28 @@ export const Login = IsAuthRedirect(() => {
             return errors;
         },
         onSubmit: (values) => {
-            dispatch(LoginTC(values.email, values.password, values.rememberMe));
+            const user = new CognitoUser({
+                Username: values.email,
+                Pool: UserPool,
+            });
+
+            const authDetails = new AuthenticationDetails({
+                Username: values.email,
+                Password: values.password
+            });
+
+            user.authenticateUser(authDetails, {
+                onFailure: err => {
+                    dispatch(setAppErrorMessageAC({error: err.message}));
+                    return
+                },
+                onSuccess: response => {
+                    dispatch(setAppSuccessMessageAC({success: `Hi mister ${values.email}`}));
+                    const data = getUser(response, values.email);
+                    dispatch(setAuthUserDataAC({data}));
+                },
+            });
+
             loginForm.resetForm();
         },
     });

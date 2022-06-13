@@ -1,7 +1,7 @@
 export type ResponseDataLoginOrAuthMe = {
-        id: null | string,
-        email: null | string,
-        isActivated: boolean | null
+    id: null | string,
+    email: null | string,
+    isActivated: boolean | null
 }
 
 export type ResponseRegisterType = {
@@ -10,12 +10,18 @@ export type ResponseRegisterType = {
     user: ResponseDataLoginOrAuthMe
 }
 
-export type initialStateAuthorizationType ={
+export type initialStateAuthorizationType = {
     user: {
-        id: null | string,
         email: null | string,
         isActivated: boolean | null
     },
     refreshToken: string | null
     isAuth: boolean
 };
+
+export type CongnitoResponseType = {
+    accessToken: {}
+    clockDrift: number
+    idToken: {}
+    refreshToken: {}
+}

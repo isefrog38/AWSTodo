@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {FileResponseType, FileType, ResponsePostType, ResponseTaskType, TodolistType} from "../types/todolistType";
+import {FileResponseType, FileType, ResponsePostType, ResponseTaskType} from "../types/todolistType";
 import {FilterType, LanguageType} from "../types/reducersType";
 import {ResponseRegisterType} from "../types/authType";
 
@@ -38,11 +38,10 @@ export const todolistsAPI = {
         return instanceAWS.get<ResponseTaskType>(`task`);
     },
 
-    createTodolist(title: string, date: Date, file?: FileType) {
-        // if (id) return instance.post<AxiosResponse<{ id: string }>>(`todolists/${id}`, {title, date, file});
+    createTodolist(title: string, date: Date, file?: FileType, id?: string) {
+        if (id) return instanceAWS.post<ResponsePostType>(`task`, {title, date, file, id});
         return instanceAWS.post<ResponsePostType>(`task`, {title, date, file});
     },
-
 
     removeTodolist(id: string) {
         return instanceAWS.delete(`task?taskId=${id}`);

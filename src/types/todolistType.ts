@@ -12,7 +12,7 @@ export type ResponseTaskType = {
 }
 
 export type ResponsePostType = {
-    body: { id: string }
+    body: { id: string , info: string }
     statusCode: number
 }
 

@@ -23,9 +23,7 @@ export const App = () => {
         const dispatch = useTypedDispatch();
 
         useEffect(() => {
-
-                dispatch(AuthMeTC());
-
+            dispatch(AuthMeTC());
         }, []);
 
         i18n
@@ -56,5 +54,4 @@ export const App = () => {
                 }
             </AppWrapper>
         )
-    }
-;
+    };
