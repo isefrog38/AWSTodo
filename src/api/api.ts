@@ -14,8 +14,8 @@ export const todolistsAPI = {
         return instanceAWS.post<ResponsePostType>(`task`, {title, date, file});
     },
 
-    updateTask(title: string, date: Date, file?: FileType, id?: string) {
-         return instanceAWS.put<ResponsePostType>(`task`, {title, date, file, id});
+    updateTask(title: string, date: Date, file?: FileType, taskId?: string) {
+         return instanceAWS.put<ResponsePostType>(`task`, {title, date, file, taskId});
     },
 
     removeTodolist(id: string) {

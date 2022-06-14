@@ -12,7 +12,7 @@ const TodolistSlice = createSlice({
             let {title, date, taskId, file} = action.payload;
             state.push({
                 title,
-                date: `${date}`.slice(0, 10).split("-").reverse().join("-"),
+                date: `${date.toLocaleDateString().split(".").join("-")}`,
                 file: file ? 1 : 0,
                 taskId,
                 entityStatus: 'idle',
@@ -25,7 +25,7 @@ const TodolistSlice = createSlice({
                 ? {
                     ...el,
                     title,
-                    date: `${date}`.slice(0, 10).split("-").reverse().join("-"),
+                    date: `${date.toLocaleDateString().split(".").join("-")}`,
                     file: file ? 1 : 0,
                 }
                 : el);
