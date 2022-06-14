@@ -3,12 +3,6 @@ import {AppInitialStateType, FilterType, LanguageType, RequestStatusType} from "
 import {LanguageResponseType} from "../types/todolistType";
 
 const initialState: AppInitialStateType = {
-    params: {
-        page: 1,
-        pageSize: 10,
-        search: '',
-        filter: '0',
-    },
     translation: {
         "todolist_senamaSoft": "Todolist SenamaSoft Company",
         "name_table": "Name",
@@ -24,7 +18,6 @@ const initialState: AppInitialStateType = {
     error: null,
     success: null,
     isFetching: true,
-    totalCount: null,
 }
 
 const AppSlice = createSlice({
@@ -39,21 +32,6 @@ const AppSlice = createSlice({
         },
         setIsFetchingAC(state, action: PayloadAction<{ isFetching: boolean }>) {
             state.isFetching = action.payload.isFetching;
-        },
-        setPageCountAC(state, action: PayloadAction<{ pageCount: number }>) {
-            state.params.pageSize = action.payload.pageCount;
-        },
-        setSearchTodoAC(state, action: PayloadAction<{ searchTodo: string }>) {
-            state.params.search = action.payload.searchTodo;
-        },
-        getPageAC(state, action: PayloadAction<{ page: number }>) {
-            state.params.page = action.payload.page;
-        },
-        setTotalPageCountTaskAC(state, action: PayloadAction<{ totalCount: number }>) {
-            state.totalCount = action.payload.totalCount;
-        },
-        setFilterAC(state, action: PayloadAction<{ filter: FilterType }>) {
-            state.params.filter = action.payload.filter;
         },
         setLanguageAC(state, action: PayloadAction<{ language: LanguageType }>) {
             state.language = action.payload.language;
@@ -70,6 +48,6 @@ const AppSlice = createSlice({
 export const AppReducer = AppSlice.reducer;
 
 export const {
-    setLanguageAC, setFilterAC, setTotalPageCountTaskAC, getPageAC, setLanguageFileAC, setAppSuccessMessageAC,
-    setIsFetchingAC, setSearchTodoAC, setPageCountAC, setAppStatusAC, setAppErrorMessageAC,
+    setLanguageAC, setLanguageFileAC, setAppSuccessMessageAC,
+    setIsFetchingAC, setAppStatusAC, setAppErrorMessageAC,
 } = AppSlice.actions;

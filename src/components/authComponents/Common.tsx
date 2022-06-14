@@ -48,14 +48,14 @@ export const Account = ({children}: any) => {
                     reject(err);
                 },
                 onSuccess: response => {
-                    dispatch(setAppSuccessMessageAC({success: `Hi ${Username}`}));
-
                     getSession().then((el: any) => {
                         dispatch(setAuthUserDataAC({
                             email: Username,
                             isActivated: el.idToken.payload.email_verified}
                         ));
-                    })
+                    });
+
+                    dispatch(setAppSuccessMessageAC({success: `Hi ${Username}`}));
 
                     resolve(response);
                 },

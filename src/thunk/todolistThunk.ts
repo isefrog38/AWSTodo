@@ -3,13 +3,13 @@ import {
     setAppStatusAC,
     setAppSuccessMessageAC,
     setIsFetchingAC,
-    setLanguageFileAC,
-    setTotalPageCountTaskAC
+    setLanguageFileAC
 } from "../reduxStore/appReducer";
 import {AppRootStateType, AppThunkType} from "../reduxStore/store";
 import {handleServerAppError, handleServerNetworkError} from "../utilsFunction/Error-Utils";
 import {todolistsAPI} from "../api/api";
 import {FileType} from "../types/todolistType";
+import {setTotalPageCountTaskAC} from "../reduxStore/paramsReducer";
 
 export const getTodolistsTC = (): AppThunkType =>
     async (dispatch, getState: () => AppRootStateType) => {
@@ -17,7 +17,7 @@ export const getTodolistsTC = (): AppThunkType =>
         dispatch(setIsFetchingAC({isFetching: true}));
 
         try {
-            let {params} = getState().AppReducer;
+            let {params} = getState().ParamsReducer;
             const response = await todolistsAPI.getTodolists(params);
             if (response.status > 200 || response.status < 400) {
                 dispatch(setTodolistsAC({todolists: response.data.todolists}));
@@ -37,7 +37,7 @@ export const resetTodolistsTC = (text: string): AppThunkType =>
     async (dispatch, getState: () => AppRootStateType) => {
 
         try {
-            let {params} = getState().AppReducer;
+            let {params} = getState().ParamsReducer;
             const response = await todolistsAPI.getTodolists(params);
             if (response.status > 200 || response.status < 400) {
                 dispatch(setTodolistsAC({todolists: response.data.todolists}));
@@ -77,7 +77,7 @@ export const createTodolistTC = (title: string, date: Date, file?: FileType, id?
 
     if (id) {
         try {
-            const {data} = await todolistsAPI.createTodolist(title, date, file, id);
+            const {data} = await todolistsAPI.updateTask(title, date, file, id);
             if (data.statusCode > 200 || data.statusCode < 400) {
                 dispatch(updateTaskAC({title, date, file, taskId: data.body.id}));
                 dispatch(setAppSuccessMessageAC({success: "Task updated !"}));

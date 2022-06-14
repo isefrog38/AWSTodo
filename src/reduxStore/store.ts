@@ -5,11 +5,13 @@ import {AppReducer} from "./appReducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
 import {AuthorizationReducer} from "./authReducer";
+import {ParamsReducer} from "./paramsReducer";
 
 const rootReducer = combineReducers({
     todolistsReducer,
     AppReducer,
     AuthorizationReducer,
+    ParamsReducer,
 });
 
 export const store = configureStore({
@@ -17,6 +19,7 @@ export const store = configureStore({
         todolistsReducer,
         AppReducer,
         AuthorizationReducer,
+        ParamsReducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware),
 })

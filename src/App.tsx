@@ -37,6 +37,7 @@ export const App = () => {
             }).then(t => t)
     },[stateApp.translation])
 
+
     return (
         <AppWrapper>
             {stateApp.status === 'loading'

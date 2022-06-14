@@ -10,9 +10,12 @@ export const todolistsAPI = {
         return instanceAWS.get<ResponseTaskType>(`task`);
     },
 
-    createTodolist(title: string, date: Date, file?: FileType, id?: string) {
-        if (id) return instanceAWS.post<ResponsePostType>(`task`, {title, date, file, id});
+    createTodolist(title: string, date: Date, file?: FileType,) {
         return instanceAWS.post<ResponsePostType>(`task`, {title, date, file});
+    },
+
+    updateTask(title: string, date: Date, file?: FileType, id?: string) {
+         return instanceAWS.put<ResponsePostType>(`task`, {title, date, file, id});
     },
 
     removeTodolist(id: string) {

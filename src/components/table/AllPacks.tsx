@@ -7,16 +7,16 @@ import {Button} from "../common/buttons/Button";
 import {PageSelect} from "../../utilsFunction/PageSelector";
 import styled from "styled-components";
 import {useAppSelector, useTypedDispatch} from "../../reduxStore/store";
-import {getPageAC, setPageCountAC, setSearchTodoAC} from "../../reduxStore/appReducer";
 import {SearchInput} from "../common/searchInput/SearchInput";
 import {AddTaskModal} from "../modalWindow/addTaskModal";
-import {AppInitialStateType, InitialStateTodolistDomainType} from "../../types/reducersType";
+import {AppInitialStateType, InitialStateTodolistDomainType, ParamsInitialStateType} from "../../types/reducersType";
 import {useTranslation} from "react-i18next";
-import {IsCheckEmailRedirect} from "../../utilsFunction/redirectFunction";
+import {getPageAC, setPageCountAC, setSearchTodoAC} from "../../reduxStore/paramsReducer";
 
 export const AllTasks = memo(() => {
 
     const stateApp = useAppSelector<AppInitialStateType>(state => state.AppReducer);
+    const stateParams = useAppSelector<ParamsInitialStateType>(state => state.ParamsReducer);
     const stateTodo = useAppSelector<InitialStateTodolistDomainType[]>(state => state.todolistsReducer);
     const [showAddModal, setShowAddModal] = useState<boolean>(false);
     const dispatch = useTypedDispatch();
@@ -38,7 +38,7 @@ export const AllTasks = memo(() => {
             </TitleProfileWrapper>
 
             <SearchBlock>
-                    <SearchInput valueSearch={stateApp.params.search} onChangeWithDebounce={onChangeDebounceRequest}/>
+                    <SearchInput valueSearch={stateParams.params.search} onChangeWithDebounce={onChangeDebounceRequest}/>
                 <Button button={"button"} name={t('add_button')} onClick={addTaskHandler}/>
             </SearchBlock>
 
@@ -46,25 +46,22 @@ export const AllTasks = memo(() => {
 
             <PaginationBlock>
                     <>
-                        {stateApp.totalCount && stateApp.totalCount > stateApp.params.pageSize &&
+                        {stateParams.totalCount && stateParams.totalCount > stateParams.params.pageSize &&
                             <Pagination portionSize={10}
-                                        totalItemsCount={stateApp.totalCount}
-                                        pageSize={stateApp.params.pageSize}
+                                        totalItemsCount={stateParams.totalCount}
+                                        pageSize={stateParams.params.pageSize}
                                         onPageChanged={onPageChanged}
-                                        currentPage={stateApp.params.page}/>
+                                        currentPage={stateParams.params.page}/>
                         }
                         <ShowCardsPage>{t('show')}
-                            <PageSelect value={stateApp.params.pageSize}
+                            <PageSelect value={stateParams.params.pageSize}
                                         onChange={onChangePageSelector}
                                         items={[5, 10, 15, 20]}
                             />
                             {t('task_per_page')}
                         </ShowCardsPage>
                     </>
-
             </PaginationBlock>
-
-
         </ProfileWrapper>
     );
 });

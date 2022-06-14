@@ -41,7 +41,7 @@ export const Header = () => {
                 </h1>
 
                 <ButtonWrapper>
-                    <LogOutButton onClick={onClickHandler}>
+                    <LogOutButton type={"button"} onClick={onClickHandler}>
                         LogOut
                     </LogOutButton>
                 </ButtonWrapper>

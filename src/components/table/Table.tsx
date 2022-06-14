@@ -4,11 +4,11 @@ import {TableElemets} from "./TableElemets";
 import {PacksBlock} from '../stylesComponents/wrapperAll';
 import styled from "styled-components";
 import {useAppSelector, useTypedDispatch} from "../../reduxStore/store";
-import {setFilterAC} from "../../reduxStore/appReducer";
 import {getTodolistsTC} from "../../thunk/todolistThunk";
-import {InitialStateTodolistDomainType} from "../../types/reducersType";
+import {InitialStateTodolistDomainType, ParamsInitialStateType} from "../../types/reducersType";
 import {useTranslation} from "react-i18next";
 import {IsCheckEmailRedirect} from "../../utilsFunction/redirectFunction";
+import {setFilterAC} from "../../reduxStore/paramsReducer";
 
 type CardTableType = {
     itemPack: InitialStateTodolistDomainType[]
@@ -17,7 +17,7 @@ type CardTableType = {
 
 export const CardTable = IsCheckEmailRedirect(({itemPack, isFetching}: CardTableType) => {
 
-    const {filter} = useAppSelector(state => state.AppReducer.params);
+    const {params} = useAppSelector<ParamsInitialStateType>(state => state.ParamsReducer);
     const [up, setUp] = useState<boolean>(false);
     const dispatch = useTypedDispatch();
     const { t } = useTranslation();
@@ -31,7 +31,7 @@ export const CardTable = IsCheckEmailRedirect(({itemPack, isFetching}: CardTable
 
     const onFilterColumnClick = () => {
         setUp(!up);
-        filter === '0'
+        params.filter === '0'
             ? dispatch(setFilterAC({filter: '1'}))
             : dispatch(setFilterAC({filter: '0'}))
         dispatch(getTodolistsTC());

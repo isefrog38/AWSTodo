@@ -7,16 +7,9 @@ export type FilterType = '0' | '1';
 export type LanguageType = "rus" | "eng";
 
 export type AppInitialStateType = {
-    params : {
-        search: string
-        pageSize: number
-        page: number
-        filter: FilterType
-    }
     success: null | string,
     language: LanguageType
     translation:LanguageResponseType
-    totalCount: number | null
     status: RequestStatusType
     error: null | string
     isFetching: boolean
@@ -30,3 +23,13 @@ export type InitialStateTodolistDomainType = TodolistType & {
     filter: FilterValuesType
     entityStatus: RequestStatusType
 };
+
+export type ParamsInitialStateType = {
+    params : {
+        search: string
+        pageSize: number
+        page: number
+        filter: FilterType
+    }
+    totalCount: number | null
+}
