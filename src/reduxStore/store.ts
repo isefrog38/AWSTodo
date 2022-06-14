@@ -21,10 +21,10 @@ export const store = configureStore({
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware),
 })
 
-// определить автоматически тип всего объекта состояния
+
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 
-export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;   // costom UseSelector
+export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
 export type TypedDispatch = ThunkDispatch<AppRootStateType, any, AnyAction>;
 export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, Action>;
 export const useTypedDispatch = () => useDispatch<TypedDispatch>();

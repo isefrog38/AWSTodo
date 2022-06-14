@@ -3,40 +3,37 @@ import {AppThunkType} from "../reduxStore/store";
 import {setAppStatusAC, setAppSuccessMessageAC} from "../reduxStore/appReducer";
 import {deleteUserDataAC, setAuthUserDataAC} from "../reduxStore/authReducer";
 import {handleServerNetworkError} from "../utilsFunction/Error-Utils";
-import {authAPI} from "../api/api";
+import {tokenInStorage} from "../components/authComponents/Common";
 
 
-export const AuthMeTC = (): AppThunkType => async dispatch => {
+export const AuthMeTC = (getSession: () => Promise<any>): AppThunkType => async dispatch => {
 
     dispatch(setAppStatusAC({status: 'loading'}));
 
     try {
-        const {data} = await authAPI.authMe()
-        if (data) {
-            localStorage.setItem('token', data.accessToken);
-            dispatch(setAuthUserDataAC({data}));
+        let key = localStorage.getItem(`${tokenInStorage}`);
+        if (key) {
+            let {idToken} = await getSession().then(el => el);
+            dispatch(setAuthUserDataAC({email: idToken.payload.email, isActivated: idToken.payload.email_verified}));
             dispatch(setAppStatusAC({status: 'succeeded'}));
+        } else {
+            dispatch(setAppStatusAC({status: 'failed'}));
         }
     } catch (error) {
         dispatch(setAppStatusAC({status: 'failed'}))
     }
 };
 
-export const LogOutTC = (): AppThunkType => async dispatch => {
+export const LogOutTC = (logout: () => void): AppThunkType => async dispatch => {
 
     dispatch(setAppStatusAC({status: 'loading'}));
 
     try {
-        const response = await authAPI.logOut()
-        if (response) {
-
-            localStorage.removeItem('token');
-
-            let resetUser = {id: null, email: null, isActivated: null};
-            dispatch(deleteUserDataAC({user: resetUser}));
+        logout();
+            dispatch(deleteUserDataAC({email: null, isActivated: null}));
             dispatch(setAppStatusAC({status: 'succeeded'}));
             dispatch(setAppSuccessMessageAC({success: "LogOut succeeded"}));
-        }
+
     } catch (error) {
         dispatch(setAppStatusAC({status: 'failed'}));
 

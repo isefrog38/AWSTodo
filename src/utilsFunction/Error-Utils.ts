@@ -1,7 +1,5 @@
 import {Dispatch} from 'redux';
 import {setAppErrorMessageAC, setAppStatusAC, setIsFetchingAC} from "../reduxStore/appReducer";
-import {CongnitoResponseType} from "../types/authType";
-import {CognitoUserSession} from "amazon-cognito-identity-js";
 
 export const handleServerAppError = (message: string, dispatch: Dispatch) => {
     if (message) {
@@ -28,16 +26,3 @@ export const fileToBase64 = (file: File | null, cb: any) => {
         cb(error, null)
     }
 };
-
-
-export const getUser = (response: CognitoUserSession, email: string) => {
-    const  data = {
-        accessToken: response.getAccessToken(),
-        refreshToken: response.getRefreshToken(),
-        user: {
-            email: email,
-            isActivated: response.isValid()
-        }
-    }
-    return data
-}

@@ -12,6 +12,7 @@ import {SearchInput} from "../common/searchInput/SearchInput";
 import {AddTaskModal} from "../modalWindow/addTaskModal";
 import {AppInitialStateType, InitialStateTodolistDomainType} from "../../types/reducersType";
 import {useTranslation} from "react-i18next";
+import {IsCheckEmailRedirect} from "../../utilsFunction/redirectFunction";
 
 export const AllTasks = memo(() => {
 

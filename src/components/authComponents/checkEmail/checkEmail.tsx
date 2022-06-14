@@ -5,6 +5,7 @@ import { useAppSelector } from '../../../reduxStore/store';
 import { CardWrapper, TextAuthWrapper, TitleAuthWrapper } from '../../stylesComponents/taskWrapper';
 import { colors } from '../../stylesComponents/colors';
 import {initialStateAuthorizationType} from "../../../types/authType";
+import {NoCheckEmailRedirect} from "../../../utilsFunction/redirectFunction";
 
 const IconWrapper = styled.div`
   display: flex;
@@ -15,9 +16,9 @@ const IconWrapper = styled.div`
   border-radius: 50%;
   background: #D7D8EF`
 
-export const CheckEmail = () => {
+export const CheckEmail = NoCheckEmailRedirect(() => {
 
-    const {user} = useAppSelector<initialStateAuthorizationType>(state => state.AuthorizationReducer);
+    const {email} = useAppSelector<initialStateAuthorizationType>(state => state.AuthorizationReducer);
 
     return (
         <CardWrapper width={413} height={468}>
@@ -30,10 +31,10 @@ export const CheckEmail = () => {
                              opacity={0.5}
                              color={colors.DarkBlue}
                              fontSz={16}>
-                {`We’ve sent an Email with activated link to ${user.email}`}
+                {`We’ve sent an Email with activated link to ${email}`}
             </TextAuthWrapper>
         </CardWrapper>
 
     )
-}
+});
 

@@ -32,3 +32,33 @@ export function IsAuthRedirect<T>(Component: ComponentType<T>) {
 
     return RedirectComponent
 }
+
+export function IsCheckEmailRedirect<T>(Component: ComponentType<T>) {
+
+    const RedirectComponent = (props: any) => {
+
+        const isActivated = useAppSelector<boolean | null>(state => state.AuthorizationReducer.isActivated);
+
+        if (!isActivated) return (<Navigate to={PATH.checkEmail}/>);
+
+        return <Component {...props as T}/>
+
+    }
+
+    return RedirectComponent
+}
+
+export function NoCheckEmailRedirect<T>(Component: ComponentType<T>) {
+
+    const RedirectComponent = (props: any) => {
+
+        const isActivated = useAppSelector<boolean | null>(state => state.AuthorizationReducer.isActivated);
+
+        if (isActivated) return (<Navigate to={PATH.todolist}/>);
+
+        return <Component {...props as T}/>
+
+    }
+
+    return RedirectComponent
+}

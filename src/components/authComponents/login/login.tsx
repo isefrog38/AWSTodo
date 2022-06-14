@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {IsAuthRedirect} from "../../../utilsFunction/redirectFunction";
 import {useFormik} from "formik";
 import {NavLink} from 'react-router-dom';
@@ -13,14 +13,9 @@ import {
 } from '../../stylesComponents/taskWrapper';
 import {Input} from '../../stylesComponents/modalWrappers';
 import {colors} from '../../stylesComponents/colors';
-import {useTypedDispatch} from "../../../reduxStore/store";
 import {PATH} from '../../../utilsFunction/enumPath';
 import {Button} from '../../stylesComponents/button';
-import UserPool from "../../../utilsFunction/userPool";
-import {CognitoUser, AuthenticationDetails} from "amazon-cognito-identity-js";
-import {setAppErrorMessageAC, setAppSuccessMessageAC} from "../../../reduxStore/appReducer";
-import {setAuthUserDataAC} from "../../../reduxStore/authReducer";
-import {getUser} from "../../../utilsFunction/Error-Utils";
+import { AccountContext } from "../Common";
 
 type FormikErrorType = {
     email?: string;
@@ -30,7 +25,7 @@ type FormikErrorType = {
 
 export const Login = IsAuthRedirect(() => {
 
-    const dispatch = useTypedDispatch();
+    const { auth } = useContext(AccountContext);
 
     const loginForm = useFormik({
         initialValues: {email: "", password: "", rememberMe: false},
@@ -49,28 +44,7 @@ export const Login = IsAuthRedirect(() => {
             return errors;
         },
         onSubmit: (values) => {
-            const user = new CognitoUser({
-                Username: values.email,
-                Pool: UserPool,
-            });
-
-            const authDetails = new AuthenticationDetails({
-                Username: values.email,
-                Password: values.password
-            });
-
-            user.authenticateUser(authDetails, {
-                onFailure: err => {
-                    dispatch(setAppErrorMessageAC({error: err.message}));
-                    return
-                },
-                onSuccess: response => {
-                    dispatch(setAppSuccessMessageAC({success: `Hi mister ${values.email}`}));
-                    const data = getUser(response, values.email);
-                    dispatch(setAuthUserDataAC({data}));
-                },
-            });
-
+            auth(values.email, values.password);
             loginForm.resetForm();
         },
     });

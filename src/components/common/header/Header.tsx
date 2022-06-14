@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import s from "./Header.module.css";
 import {PageSelect} from "../../../utilsFunction/PageSelector";
 import {useAppSelector, useTypedDispatch} from "../../../reduxStore/store";
@@ -7,18 +7,19 @@ import {AppInitialStateType, LanguageType} from "../../../types/reducersType";
 import {getLanguageTC} from "../../../thunk/todolistThunk";
 import {useTranslation} from "react-i18next";
 import styled from "styled-components";
+import {AccountContext} from "../../authComponents/Common";
 import {LogOutTC} from "../../../thunk/authThunk";
 
 export const Header = () => {
 
     const {language} = useAppSelector<AppInitialStateType>(state => state.AppReducer);
     const dispatch = useTypedDispatch();
-    const {t} = useTranslation();
+    const { t } = useTranslation();
+    const { logout } = useContext(AccountContext);
 
 
-    const onClickHandler = () => {
-        dispatch(LogOutTC());
-    }
+    const onClickHandler = () => dispatch(LogOutTC(logout));
+
     const onLanguageChange = (language: LanguageType) => {
         dispatch(setLanguageAC({language}));
         dispatch(getLanguageTC());

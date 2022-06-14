@@ -8,13 +8,14 @@ import {setFilterAC} from "../../reduxStore/appReducer";
 import {getTodolistsTC} from "../../thunk/todolistThunk";
 import {InitialStateTodolistDomainType} from "../../types/reducersType";
 import {useTranslation} from "react-i18next";
+import {IsCheckEmailRedirect} from "../../utilsFunction/redirectFunction";
 
 type CardTableType = {
     itemPack: InitialStateTodolistDomainType[]
     isFetching: boolean
 };
 
-export const CardTable = ({itemPack, isFetching}: CardTableType) => {
+export const CardTable = IsCheckEmailRedirect(({itemPack, isFetching}: CardTableType) => {
 
     const {filter} = useAppSelector(state => state.AppReducer.params);
     const [up, setUp] = useState<boolean>(false);
@@ -55,7 +56,7 @@ export const CardTable = ({itemPack, isFetching}: CardTableType) => {
             </Table>
         </PacksBlock>
     );
-};
+});
 
 
 const Span = styled.span<{ up?: boolean }>`

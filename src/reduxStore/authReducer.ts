@@ -1,12 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {initialStateAuthorizationType, ResponseDataLoginOrAuthMe, ResponseRegisterType} from "../types/authType";
+import {initialStateAuthorizationType, ResponseDataLoginOrAuthMe} from "../types/authType";
 
 let initialState: initialStateAuthorizationType = {
-    user: {
-        email: null,
-        isActivated: null,
-    },
-    refreshToken: null,
+    email: null,
+    isActivated: null,
     isAuth: false
 };
 
@@ -14,18 +11,18 @@ const AuthSlice = createSlice({
     name: "AuthSlice",
     initialState: initialState,
     reducers: {
-        setAuthUserDataAC(state, action: PayloadAction<{ data:ResponseRegisterType }>) {
-            state.user = {...action.payload.data.user};
-            state.refreshToken = action.payload.data.refreshToken;
+        setAuthUserDataAC(state, action: PayloadAction< ResponseDataLoginOrAuthMe >) {
+            state.email = action.payload.email;
+            state.isActivated = action.payload.isActivated;
             state.isAuth = true;
         },
-        deleteUserDataAC(state, action: PayloadAction<{ user: ResponseDataLoginOrAuthMe }>) {
-            state.user = {...action.payload.user};
-            state.refreshToken = null;
+        deleteUserDataAC(state, action: PayloadAction< ResponseDataLoginOrAuthMe >) {
+            state.email = action.payload.email;
+            state.isActivated = action.payload.isActivated;
             state.isAuth = false;
         },
         setCheckEmailAC(state, action: PayloadAction<{ email: string }>) {
-            state.user.email = action.payload.email;
+            state.email = action.payload.email;
         },
     },
 });
