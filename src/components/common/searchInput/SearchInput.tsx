@@ -2,6 +2,8 @@ import React, {ChangeEvent, useState} from 'react';
 import s from "./SearchInput.module.css";
 import styled from "styled-components";
 
+const SearchImg = "https://cdn-icons-png.flaticon.com/512/149/149852.png";
+
 type InputFormType = {
     valueSearch: string
     onChangeWithDebounce: (title: string) => void
@@ -37,11 +39,11 @@ export const SearchInput = ({valueSearch, onChangeWithDebounce}: InputFormType) 
 export const InputWrapper = styled.input`
   height: 4vh;
   width: ${({width}) => width ? width : '90%'};
+  background: url(${SearchImg}) no-repeat scroll 0.5vw 0.5vw;
   border-radius: 0.3vw;
   margin-right: 2vw;
   background-size: 1vw;
-  padding-left: 2vw;
-  font-size: 0.9vw;
+  font-size: 1vw;
   border: 1px solid #D9D9F1;
   opacity: 0.7;
 
