@@ -119,7 +119,7 @@ const Main = styled.span<{pd?: number, active: boolean }>`
   cursor: pointer;
   border-radius: ${({active}) => active ? '0.2vw 0.2vw 0 0' : '0.2vw'};
   border-bottom: ${({active}) => active && 'none'};
-  background-color: ${({active}) => active && colors.Lavender};
+  background-color: ${({active}) => active && colors.FilterButtonColor};
   color: ${({active}) => active && 'black'};
   
   :hover {

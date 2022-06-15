@@ -35,7 +35,7 @@ const Item = styled.span`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 2.3vw;
+  height: 2.4vw;
   padding: 0 1.2vw;
   font-size: 0.8vw;
   

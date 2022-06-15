@@ -1,27 +1,22 @@
-import {createTaskAC, setTodolistsAC, updateTaskAC} from "../reduxStore/todolistsReducer";
-import {
-    setAppStatusAC,
-    setAppSuccessMessageAC,
-    setIsFetchingAC,
-    setLanguageFileAC
-} from "../reduxStore/appReducer";
+import {createTaskAC, deleteTaskAC, setTasksAC, updateTaskAC} from "../reduxStore/todolistsReducer";
+import {setAppStatusAC, setAppSuccessMessageAC, setIsFetchingAC, setLanguageFileAC} from "../reduxStore/appReducer";
 import {AppRootStateType, AppThunkType} from "../reduxStore/store";
 import {handleServerAppError, handleServerNetworkError} from "../utilsFunction/Error-Utils";
 import {todolistsAPI} from "../api/api";
 import {FileType} from "../types/todolistType";
 import {setTotalPageCountTaskAC} from "../reduxStore/paramsReducer";
 
-export const getTodolistsTC = (): AppThunkType =>
+export const getTasksTC = (): AppThunkType =>
     async (dispatch, getState: () => AppRootStateType) => {
 
         dispatch(setIsFetchingAC({isFetching: true}));
 
         try {
             let {params} = getState().ParamsReducer;
-            const response = await todolistsAPI.getTodolists(params);
-            if (response.status > 200 || response.status < 400) {
-                dispatch(setTodolistsAC({todolists: response.data.todolists}));
-                dispatch(setTotalPageCountTaskAC({totalCount: response.data.totalCount}));
+            const {data} = await todolistsAPI.getTasks(params);
+            if (data.statusCode > 200 || data.statusCode < 400) {
+                dispatch(setTasksAC({todolists: data.todolists}));
+                dispatch(setTotalPageCountTaskAC({totalCount: data.totalCount}));
                 dispatch(setAppStatusAC({status: 'succeeded'}));
                 dispatch(setIsFetchingAC({isFetching: false}));
             }
@@ -33,35 +28,16 @@ export const getTodolistsTC = (): AppThunkType =>
     }
 
 
-export const resetTodolistsTC = (text: string): AppThunkType =>
-    async (dispatch, getState: () => AppRootStateType) => {
-
-        try {
-            let {params} = getState().ParamsReducer;
-            const response = await todolistsAPI.getTodolists(params);
-            if (response.status > 200 || response.status < 400) {
-                dispatch(setTodolistsAC({todolists: response.data.todolists}));
-                dispatch(setTotalPageCountTaskAC({totalCount: response.data.totalCount}));
-                dispatch(setAppStatusAC({status: 'succeeded'}));
-                dispatch(setIsFetchingAC({isFetching: false}));
-                dispatch(setAppSuccessMessageAC({success: text}));
-            }
-        } catch (e) {
-            if (e instanceof Error) {
-                handleServerNetworkError(e.message, dispatch);
-            }
-        }
-    }
-
-
-export const removeTodolistTC = (todolistId: string): AppThunkType => async dispatch => {
+export const removeTaskTC = (taskId: string): AppThunkType => async dispatch => {
 
     dispatch(setIsFetchingAC({isFetching: true}));
 
     try {
-        const response = await todolistsAPI.removeTodolist(todolistId);
-        if (response.status > 200 || response.status < 400) {
-            dispatch(resetTodolistsTC("Task removed !"));
+        const {data} = await todolistsAPI.removeTask(taskId);
+        if (data.statusCode > 200 || data.statusCode < 400) {
+            dispatch(deleteTaskAC({taskId}));
+            dispatch(setIsFetchingAC({isFetching: false}));
+            dispatch(setAppSuccessMessageAC({success: "Task removed !"}));
         }
     } catch (e) {
         if (e instanceof Error) {
@@ -71,7 +47,7 @@ export const removeTodolistTC = (todolistId: string): AppThunkType => async disp
 }
 
 
-export const createTodolistTC = (title: string, date: Date, file?: FileType, id?: string): AppThunkType => async dispatch => {
+export const createTaskTC = (title: string, date: Date, file?: FileType, id?: string): AppThunkType => async dispatch => {
 
     dispatch(setIsFetchingAC({isFetching: true}));
 
@@ -79,11 +55,26 @@ export const createTodolistTC = (title: string, date: Date, file?: FileType, id?
         try {
             const {data} = await todolistsAPI.updateTask(title, date, file, id);
             if (data.statusCode > 200 || data.statusCode < 400) {
-                dispatch(updateTaskAC({title, date, file, taskId: data.body.id}));
+                dispatch(updateTaskAC({title, date, file, taskId: data.data.id}));
                 dispatch(setAppSuccessMessageAC({success: "Task updated !"}));
                 dispatch(setIsFetchingAC({isFetching: false}));
             } else {
-                handleServerAppError(data.body.info, dispatch);
+                handleServerAppError(data.data.info, dispatch);
+            }
+        } catch (e) {
+            if (e instanceof Error) {
+                handleServerNetworkError(e.message, dispatch);
+            }
+        }
+    } else {
+        try {
+            const {data} = await todolistsAPI.createTask(title, date, file);
+            if (data.statusCode > 200 || data.statusCode < 400) {
+                dispatch(createTaskAC({title, date, file, taskId: data.data.id}));
+                dispatch(setAppSuccessMessageAC({success: "Task created !"}));
+                dispatch(setIsFetchingAC({isFetching: false}));
+            } else {
+                handleServerAppError(data.data.info, dispatch);
             }
         } catch (e) {
             if (e instanceof Error) {
@@ -91,27 +82,13 @@ export const createTodolistTC = (title: string, date: Date, file?: FileType, id?
             }
         }
     }
-    try {
-        const {data} = await todolistsAPI.createTodolist(title, date, file);
-        if (data.statusCode > 200 || data.statusCode < 400) {
-            dispatch(createTaskAC({title, date, file, taskId: data.body.id}));
-            dispatch(setAppSuccessMessageAC({success: "Task created !"}));
-            dispatch(setIsFetchingAC({isFetching: false}));
-        } else {
-            handleServerAppError(data.body.info, dispatch);
-        }
-    } catch (e) {
-        if (e instanceof Error) {
-            handleServerNetworkError(e.message, dispatch);
-        }
-    }
 }
 
-export const getFile = (id: string): AppThunkType => async dispatch => {
+export const getFileTC = (id: string): AppThunkType => async dispatch => {
     try {
-        const response = await todolistsAPI.getFile(id);
-        if (response.status > 200 || response.status < 400) {
-            let file = response.data.file;
+        const {data} = await todolistsAPI.getFile(id);
+        if (data.statusCode > 200 || data.statusCode < 400) {
+            let file = data.file;
             if (file?.name) {
                 let download = document.createElement('a');
                 download.href = file?.path;
@@ -133,17 +110,17 @@ export const getLanguageTC = (): AppThunkType =>
 
         try {
             const {language} = getState().AppReducer
-            const response = await todolistsAPI.getLanguage(language);
-            if (response.data.statusCode > 200 || response.data.statusCode < 400) {
-                if (response.data.data.Rus) {
-                    dispatch(setLanguageFileAC({translation: response.data.data.Rus}));
+            const {data} = await todolistsAPI.getLanguage(language);
+            if (data.statusCode > 200 || data.statusCode < 400) {
+                if (data.data.Rus) {
+                    dispatch(setLanguageFileAC({translation: data.data.Rus}));
                     dispatch(setAppStatusAC({status: 'succeeded'}));
                 } else {
-                    dispatch(setLanguageFileAC({translation: response.data.data.Eng}));
+                    dispatch(setLanguageFileAC({translation: data.data.Eng}));
                     dispatch(setAppStatusAC({status: 'succeeded'}));
                 }
             } else {
-                handleServerAppError(response.data.body.info, dispatch);
+                handleServerAppError(data.body.info, dispatch);
             }
         } catch (e) {
             if (e instanceof Error) {

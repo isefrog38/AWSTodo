@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {colors} from "../stylesComponents/colors";
 import {DeleteTaskModal} from "../modalWindow/deleteModal";
 import {useTypedDispatch} from "../../reduxStore/store";
-import {getFile} from "../../thunk/todolistThunk";
+import {getFileTC} from "../../thunk/todolistThunk";
 import {AddTaskModal} from "../modalWindow/addTaskModal";
 import {InitialStateTodolistDomainType} from "../../types/reducersType";
 
@@ -17,7 +17,7 @@ export const ActiveButtonsTable = ({el}: ActiveButtonsTableType) => {
     const [editModal, setEditModal] = useState<boolean>(false);
     const dispatch = useTypedDispatch();
 
-    const downloadFile = () => dispatch(getFile(el.taskId));
+    const downloadFile = () => dispatch(getFileTC(el.taskId));
     const addModalClick = () => setEditModal(true);
 
     return (

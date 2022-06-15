@@ -6,11 +6,11 @@ const instanceAWS = axios.create({baseURL: 'https://hnwqd3lfo9.execute-api.eu-we
 
 export const todolistsAPI = {
 
-    getTodolists(params: { pageSize: number, page: number, filter: FilterType, search?: string }) {
-        return instanceAWS.get<ResponseTaskType>(`task`);
+    getTasks(params: { pageSize: number, page: number, filter: FilterType, search?: string }) {
+        return instanceAWS.get<ResponseTaskType>(`task`, {params});
     },
 
-    createTodolist(title: string, date: Date, file?: FileType,) {
+    createTask(title: string, date: Date, file?: FileType,) {
         return instanceAWS.post<ResponsePostType>(`task`, {title, date, file});
     },
 
@@ -18,12 +18,12 @@ export const todolistsAPI = {
          return instanceAWS.put<ResponsePostType>(`task`, {title, date, file, taskId});
     },
 
-    removeTodolist(id: string) {
+    removeTask(id: string) {
         return instanceAWS.delete(`task?taskId=${id}`);
     },
 
     getFile(id: string) {
-        return instanceAWS.get<{ file: FileResponseType }>(`/file?id=${id}`);
+        return instanceAWS.get<{ statusCode: number, file: FileResponseType }>(`/file?id=${id}`);
     },
 
     getLanguage(lang: LanguageType) {

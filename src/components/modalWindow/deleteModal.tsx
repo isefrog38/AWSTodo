@@ -11,7 +11,7 @@ import {
 } from '../stylesComponents/modalWrappers';
 import {TodolistType} from "../../types/todolistType";
 import {useAppSelector, useTypedDispatch} from "../../reduxStore/store";
-import {removeTodolistTC} from "../../thunk/todolistThunk";
+import {removeTaskTC} from "../../thunk/todolistThunk";
 
 type DeletePackModalType = {
     id: string
@@ -26,7 +26,7 @@ export const DeleteTaskModal = ({setShow, id}: DeletePackModalType) => {
     const closeModalClick = () => setShow(false);
     const deleteClickHandler = () => {
         setShow(false);
-        dispatch(removeTodolistTC(id))
+        dispatch(removeTaskTC(id))
     };
     let findName = stateTask.find(el => el.taskId === id)?.title;
 

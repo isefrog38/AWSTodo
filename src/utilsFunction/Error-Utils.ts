@@ -14,6 +14,7 @@ export const handleServerAppError = (message: string, dispatch: Dispatch) => {
 export const handleServerNetworkError = (error: string, dispatch: Dispatch) => {
     dispatch(setAppErrorMessageAC({error: error}));
     dispatch(setAppStatusAC({status: 'failed'}));
+    dispatch(setIsFetchingAC({isFetching: false}));
 }
 
 export const fileToBase64 = (file: File | null, cb: any) => {

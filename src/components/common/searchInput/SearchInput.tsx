@@ -16,7 +16,7 @@ export const SearchInput = ({valueSearch, onChangeWithDebounce}: InputFormType) 
     const onChangeSearchHandler = (title: ChangeEvent<HTMLInputElement>) => {
         setValue(title.currentTarget.value);
         timerId && clearTimeout(timerId);
-        const id: number = +setTimeout(onChangeWithDebounce, 1000, title.currentTarget.value);
+        const id: number = +setTimeout(onChangeWithDebounce, 700, title.currentTarget.value);
         setTimerId(id);
     };
 

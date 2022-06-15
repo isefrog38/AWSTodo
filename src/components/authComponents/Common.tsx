@@ -4,6 +4,7 @@ import Pool from "../../utilsFunction/userPool";
 import {setAppErrorMessageAC, setAppSuccessMessageAC} from "../../reduxStore/appReducer";
 import {setAuthUserDataAC} from "../../reduxStore/authReducer";
 import {useTypedDispatch} from "../../reduxStore/store";
+import {AuthMeTC} from "../../thunk/authThunk";
 
 export const tokenInStorage = `CognitoIdentityServiceProvider.1av95erant2g4ugpk5gdm4qn83.35a94f8b-4ef4-4faf-8d9c-b3bcc5534c78.accessToken`;
 
@@ -48,15 +49,7 @@ export const Account = ({children}: any) => {
                     reject(err);
                 },
                 onSuccess: response => {
-                    getSession().then((el: any) => {
-                        dispatch(setAuthUserDataAC({
-                            email: Username,
-                            isActivated: el.idToken.payload.email_verified}
-                        ));
-                    });
-
-                    dispatch(setAppSuccessMessageAC({success: `Hi ${Username}`}));
-
+                    dispatch(AuthMeTC(getSession));
                     resolve(response);
                 },
                 newPasswordRequired: data => {

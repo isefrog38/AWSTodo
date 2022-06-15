@@ -15,6 +15,7 @@ export const AuthMeTC = (getSession: () => Promise<any>): AppThunkType => async 
         if (key) {
             let {idToken} = await getSession().then(el => el);
             dispatch(setAuthUserDataAC({email: idToken.payload.email, isActivated: idToken.payload.email_verified}));
+            dispatch(setAppSuccessMessageAC({success: `Welcome ${idToken.payload.email}`}));
             dispatch(setAppStatusAC({status: 'succeeded'}));
         } else {
             dispatch(setAppStatusAC({status: 'failed'}));

@@ -4,7 +4,7 @@ import {TableElemets} from "./TableElemets";
 import {PacksBlock} from '../stylesComponents/wrapperAll';
 import styled from "styled-components";
 import {useAppSelector, useTypedDispatch} from "../../reduxStore/store";
-import {getTodolistsTC} from "../../thunk/todolistThunk";
+import {getTasksTC} from "../../thunk/todolistThunk";
 import {InitialStateTodolistDomainType, ParamsInitialStateType} from "../../types/reducersType";
 import {useTranslation} from "react-i18next";
 import {IsCheckEmailRedirect} from "../../utilsFunction/redirectFunction";
@@ -34,7 +34,7 @@ export const CardTable = IsCheckEmailRedirect(({itemPack, isFetching}: CardTable
         params.filter === '0'
             ? dispatch(setFilterAC({filter: '1'}))
             : dispatch(setFilterAC({filter: '0'}))
-        dispatch(getTodolistsTC());
+        dispatch(getTasksTC());
     }
 
     return (
@@ -76,13 +76,13 @@ const Span = styled.span<{ up?: boolean }>`
 `;
 
 const Table = styled.div`
-  min-height: 300px;
+  min-height: 280px;
   height: auto;
 `;
 
 const ItemColumn = styled.div`
   width: 100%;
-  height: 2.3vw;
+  height: 2.4vw;
   background-color: #ECECF9;
   font-size: 1vw;
   font-weight: 600;

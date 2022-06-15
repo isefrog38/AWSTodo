@@ -5,14 +5,14 @@ import {
 } from "../stylesComponents/modalWrappers";
 import {useFormik} from "formik";
 import {useAppSelector, useTypedDispatch} from "../../reduxStore/store";
-import {createTodolistTC} from "../../thunk/todolistThunk";
+import {createTaskTC} from "../../thunk/todolistThunk";
 import {Button} from "../common/buttons/Button";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {fileToBase64} from "../../utilsFunction/Error-Utils";
 import { FormWrapper, TextAuthWrapper } from '../stylesComponents/taskWrapper';
 import { colors } from '../stylesComponents/colors';
-import {AppInitialStateType, InitialStateTodolistDomainType} from "../../types/reducersType";
+import {InitialStateTodolistDomainType} from "../../types/reducersType";
 
 type AddPackModalType = {
     name?: string
@@ -32,6 +32,7 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
     const [fileUrl, setFileURL] = useState<string | null>(null);
     const fileInput = useRef<HTMLInputElement>(null);
     const [date, setDate] = useState(new Date());
+    const [oldDate, setOldDate] = useState('');
 
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,9 +67,9 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
                     lastModified: file?.lastModified,
                     path: fileUrl,
                 };
-                dispatch(createTodolistTC(values.nameTask, date, fileTyped, el?.taskId));
+                dispatch(createTaskTC(values.nameTask, date, fileTyped, el?.taskId));
             } else {
-                dispatch(createTodolistTC(values.nameTask, date, undefined, el?.taskId));
+                dispatch(createTaskTC(values.nameTask, date, undefined, el?.taskId));
             }
             setShow(false);
         },
@@ -76,7 +77,7 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
 
     useEffect(() => {
         loginForm.setFieldValue('nameTask', el?.title);
-        loginForm.setFieldValue('date', el?.date);
+        if (el && el.date) setOldDate(el.date.slice(0, 10).split("-").reverse().join("-"));
     }, [el?.title, el?.date])
 
     return (
@@ -115,8 +116,13 @@ export const AddTaskModal = ({setShow, el, name}: AddPackModalType) => {
                             <div style={{marginLeft: "30px"}}>
                                 <DatePicker id="date"
                                             selected={date}
-                                            onChange={(date: Date) => setDate(date)}
-                                            value={el?.date.slice(0, 10).split("-").reverse().join("-")}
+                                            onChange={(date: Date) => {
+                                                setOldDate(date.toLocaleDateString().slice(0, 10).split(".").join("-"))
+                                                setDate(date)
+                                            }}
+                                            value={oldDate
+                                                ? oldDate
+                                                : date.toLocaleDateString().slice(0, 10).split(".").join("-")}
                                 />
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {AllTasks} from "./AllPacks";
 import {GeneralProfileWrapper} from '../stylesComponents/generalWapper';
-import {getTodolistsTC} from "../../thunk/todolistThunk";
+import {getTasksTC} from "../../thunk/todolistThunk";
 import {useAppSelector, useTypedDispatch} from "../../reduxStore/store";
 import {ParamsInitialStateType} from "../../types/reducersType";
 import {initialStateAuthorizationType} from "../../types/authType";
@@ -15,7 +15,7 @@ export const TodolistList = NotAuthRedirect(() => {
     const dispatch = useTypedDispatch();
 
     useEffect(() => {
-        dispatch(getTodolistsTC());
+        dispatch(getTasksTC());
     }, [stateParams.params]);
 
     return (
