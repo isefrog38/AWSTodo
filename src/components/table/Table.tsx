@@ -4,7 +4,6 @@ import {TableElemets} from "./TableElemets";
 import {PacksBlock} from '../stylesComponents/wrapperAll';
 import styled from "styled-components";
 import {useAppSelector, useTypedDispatch} from "../../reduxStore/store";
-import {getTasksTC} from "../../thunk/todolistThunk";
 import {InitialStateTodolistDomainType, ParamsInitialStateType} from "../../types/reducersType";
 import {useTranslation} from "react-i18next";
 import {IsCheckEmailRedirect} from "../../utilsFunction/redirectFunction";
@@ -20,21 +19,18 @@ export const CardTable = IsCheckEmailRedirect(({itemPack, isFetching}: CardTable
     const {params} = useAppSelector<ParamsInitialStateType>(state => state.ParamsReducer);
     const [up, setUp] = useState<boolean>(false);
     const dispatch = useTypedDispatch();
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const TableList = [
-        {id: 1, name: t('name_table') },
-        {id: 2, name: t('date_table') },
+        {id: 1, name: t('name_table')},
+        {id: 2, name: t('date_table')},
         {id: 5, name: t('actions_table')},
     ];
 
 
     const onFilterColumnClick = () => {
         setUp(!up);
-        params.filter === '0'
-            ? dispatch(setFilterAC({filter: '1'}))
-            : dispatch(setFilterAC({filter: '0'}))
-        dispatch(getTasksTC());
+        dispatch(setFilterAC({filter: params.filter === '0' ? '1' : '0'}))
     }
 
     return (

@@ -1,8 +1,7 @@
 import React, {createContext} from "react";
 import {AuthenticationDetails, CognitoUser} from "amazon-cognito-identity-js";
 import Pool from "../../utilsFunction/userPool";
-import {setAppErrorMessageAC, setAppSuccessMessageAC} from "../../reduxStore/appReducer";
-import {setAuthUserDataAC} from "../../reduxStore/authReducer";
+import {setAppErrorMessageAC} from "../../reduxStore/appReducer";
 import {useTypedDispatch} from "../../reduxStore/store";
 import {AuthMeTC} from "../../thunk/authThunk";
 

@@ -13,7 +13,7 @@ export const TableElemets = ({el}: TableElementsType) => {
              <Item>{el.title}</Item>
             <Item>{el.date.length <= 10 ? el.date : el.date.slice(0, 10).split("-").reverse().join("-")}</Item>
             <Item>
-                <ActiveButtonsTable el={el} />
+                <ActiveButtonsTable el={el}/>
             </Item>
         </GeneralBlock>
     );
@@ -35,7 +35,7 @@ const Item = styled.span`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 2.4vw;
+  height: 2.2vw;
   padding: 0 1.2vw;
   font-size: 0.8vw;
   
