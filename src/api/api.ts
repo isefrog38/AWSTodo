@@ -29,5 +29,8 @@ export const todolistsAPI = {
     getLanguage(lang: LanguageType) {
         return instanceAWS.get(`language?lang=${lang}`);
     },
+    // getLanguage(lang: LanguageType) {
+    //     return instanceAWS.get(`language?lang=${lang}`);
+    // },
 }
 

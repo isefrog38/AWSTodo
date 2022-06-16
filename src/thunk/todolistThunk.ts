@@ -14,7 +14,7 @@ export const getTasksTC = (): AppThunkType =>
         try {
             let {params} = getState().ParamsReducer;
             const {data} = await todolistsAPI.getTasks(params);
-            if (data.statusCode > 200 || data.statusCode < 400) {
+            if (data.statusCode >= 200 && data.statusCode < 400) {
                 dispatch(setTasksAC({todolists: data.todolists}));
                 dispatch(setTotalPageCountTaskAC({totalCount: data.totalCount}));
                 dispatch(setAppStatusAC({status: 'succeeded'}));
@@ -34,7 +34,7 @@ export const removeTaskTC = (taskId: string): AppThunkType => async dispatch => 
 
     try {
         const {data} = await todolistsAPI.removeTask(taskId);
-        if (data.statusCode > 200 || data.statusCode < 400) {
+        if (data.statusCode >= 200 && data.statusCode < 400) {
             dispatch(deleteTaskAC({taskId}));
             dispatch(setIsFetchingAC({isFetching: false}));
             dispatch(setAppSuccessMessageAC({success: "Task removed !"}));
@@ -54,7 +54,7 @@ export const createTaskTC = (title: string, date: Date, file?: FileType, id?: st
     if (id) {
         try {
             const {data} = await todolistsAPI.updateTask(title, date, file, id);
-            if (data.statusCode > 200 || data.statusCode < 400) {
+            if (data.statusCode >= 200 && data.statusCode < 400) {
                 dispatch(updateTaskAC({title, date, file, taskId: data.data.id}));
                 dispatch(setAppSuccessMessageAC({success: "Task updated !"}));
                 dispatch(setIsFetchingAC({isFetching: false}));
@@ -69,7 +69,7 @@ export const createTaskTC = (title: string, date: Date, file?: FileType, id?: st
     } else {
         try {
             const {data} = await todolistsAPI.createTask(title, date, file);
-            if (data.statusCode > 200 || data.statusCode < 400) {
+            if (data.statusCode >= 200 && data.statusCode < 400) {
                 dispatch(createTaskAC({title, date, file, taskId: data.data.id}));
                 dispatch(setAppSuccessMessageAC({success: "Task created !"}));
                 dispatch(setIsFetchingAC({isFetching: false}));
@@ -87,7 +87,7 @@ export const createTaskTC = (title: string, date: Date, file?: FileType, id?: st
 export const getFileTC = (id: string): AppThunkType => async dispatch => {
     try {
         const {data} = await todolistsAPI.getFile(id);
-        if (data.statusCode > 200 || data.statusCode < 400) {
+        if (data.statusCode >= 200 && data.statusCode < 400) {
             let file = data.file;
             if (file?.name) {
                 let download = document.createElement('a');
@@ -95,6 +95,8 @@ export const getFileTC = (id: string): AppThunkType => async dispatch => {
                 download.setAttribute('download', file?.name);
                 download.click();
             }
+        } else {
+            throw new Error("File is not defined")
         }
     } catch (e) {
         if (e instanceof Error) {
@@ -111,7 +113,7 @@ export const getLanguageTC = (): AppThunkType =>
         try {
             const {language} = getState().AppReducer
             const {data} = await todolistsAPI.getLanguage(language);
-            if (data.statusCode > 200 || data.statusCode < 400) {
+            if (data.statusCode >= 200 && data.statusCode < 400) {
                 if (data.data.Rus) {
                     dispatch(setLanguageFileAC({translation: data.data.Rus}));
                     dispatch(setAppStatusAC({status: 'succeeded'}));
@@ -120,7 +122,7 @@ export const getLanguageTC = (): AppThunkType =>
                     dispatch(setAppStatusAC({status: 'succeeded'}));
                 }
             } else {
-                handleServerAppError(data.body.info, dispatch);
+                throw new Error(data.body.info);
             }
         } catch (e) {
             if (e instanceof Error) {
