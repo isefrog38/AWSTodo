@@ -10,8 +10,8 @@ export const todolistsAPI = {
         return instanceAWS.get<ResponseTaskType>(`task`, {params});
     },
 
-    createTask(title: string, date: Date, file?: FileType,) {
-        return instanceAWS.post<ResponsePostType>(`task`, {title, date, file});
+    createTask(title: string, date: Date, file?: FileType) {
+            return instanceAWS.post<ResponsePostType>(`task`, {title, date, file});
     },
 
     updateTask(title: string, date: Date, file?: FileType, taskId?: string) {
@@ -29,8 +29,17 @@ export const todolistsAPI = {
     getLanguage(lang: LanguageType) {
         return instanceAWS.get(`language?lang=${lang}`);
     },
-    // getLanguage(lang: LanguageType) {
-    //     return instanceAWS.get(`language?lang=${lang}`);
-    // },
+///////////////////////////////// S3
+    getFileS3(id: string) {
+        return instanceAWS.get<{ statusCode: number, file: FileResponseType }>(`/s3file?id=${id}`);
+    },
+
+    createTaskS3(title: string, date: Date, file: FileType) {
+        return instanceAWS.post<ResponsePostType>(`s3file`, {title, date, file});
+    },
+
+    removeTaskS3(id: string) {
+        return instanceAWS.delete(`s3file?id=${id}`);
+    },
 }
 
