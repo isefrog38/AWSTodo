@@ -71,3 +71,13 @@ export const Account = ({children}: any) => {
         </AccountContext.Provider>
     );
 };
+
+
+
+
+// const refToc = localStorage.getItem('CognitoIdentityServiceProvider.1av95erant2g4ugpk5gdm4qn83.35a94f8b-4ef4-4faf-8d9c-b3bcc5534c78.refreshToken')
+// const accessToc = localStorage.getItem('CognitoIdentityServiceProvider.1av95erant2g4ugpk5gdm4qn83.35a94f8b-4ef4-4faf-8d9c-b3bcc5534c78.accessToken')
+// const idToc = localStorage.getItem('CognitoIdentityServiceProvider.1av95erant2g4ugpk5gdm4qn83.35a94f8b-4ef4-4faf-8d9c-b3bcc5534c78.idToken')
+// document.cookie = `accessToken=${accessToc}`
+// document.cookie = `idToken=${idToc}`
+// document.cookie = `refreshToken=${refToc}`

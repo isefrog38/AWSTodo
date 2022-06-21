@@ -69,7 +69,7 @@ export const createTaskTC = (title: string, date: Date, file?: FileType, id?: st
         /// update  task
     if (id) {
         try {
-            const {data} = await todolistsAPI.updateTask(title, date, file, id);
+            const {data} = await todolistsAPI.updateTask(title, date, id, file);
             if (data.statusCode >= 200 && data.statusCode < 400) {
                 dispatch(updateTaskAC({title, date, file, taskId: data.data.id}));
                 dispatch(setAppSuccessMessageAC({success: "Task updated !"}));
